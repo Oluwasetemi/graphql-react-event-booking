@@ -6,10 +6,12 @@ const eventSchema = new Schema({
   title: {
     type: String,
     required: true,
+    trim: true,
   },
   description: {
     type: String,
     required: true,
+    trim: true,
   },
   price: {
     type: Number,
@@ -19,6 +21,10 @@ const eventSchema = new Schema({
     type: Date,
     default: new Date().toISOString(),
     required: true,
+  },
+  creator: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
   },
 });
 
