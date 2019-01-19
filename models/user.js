@@ -1,13 +1,16 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
+const mongoDBErrorHandler = require('mongoose-mongodb-errors');
 
-const { Schema } = mongoose;
+const { Schema, model } = mongoose;
 
 const userSchema = new Schema({
   email: {
     type: String,
-    required: true,
-    // unique: true,
+    required: 'please supply an email address',
+    unique: true,
     lowercase: true,
+    validate: [validator.isEmail, 'Invalid email address'],
   },
   password: {
     type: String,
@@ -21,4 +24,6 @@ const userSchema = new Schema({
   ],
 });
 
-module.exports = mongoose.model('User', userSchema);
+userSchema.plugin(mongoDBErrorHandler);
+
+module.exports = model('User', userSchema);
