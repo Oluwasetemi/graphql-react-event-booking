@@ -1,7 +1,9 @@
-const Event = require('../../models/events');
-const User = require('../../models/user');
+const mongoose = require('mongoose');
 const { dateToString } = require('../../helpers/date');
 const { transformedEvent } = require('./merge');
+
+const Event = mongoose.model('Event');
+const User = mongoose.model('User');
 
 module.exports = {
   events: async () => {

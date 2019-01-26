@@ -1,5 +1,10 @@
-const Booking = require('../../models/booking');
-const Event = require('../../models/events');
+const mongoose = require('mongoose');
+
+// const Booking = require('../../models/booking');
+// const Event = require('../../models/events');
+const Booking = mongoose.model('Booking');
+const Event = mongoose.model('Event');
+
 const { transformedEvent, transformBooking } = require('./merge');
 
 module.exports = {

@@ -1,5 +1,7 @@
-const User = require('../../models/user');
-const Event = require('../../models/events');
+const mongoose = require('mongoose');
+
+const User = mongoose.model('User');
+const Event = mongoose.model('Event');
 const { dateToString } = require('../../helpers/date');
 
 const events = async eventIds => {

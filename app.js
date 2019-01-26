@@ -1,3 +1,8 @@
+// import all the Database Model
+require('./models/events');
+require('./models/user');
+require('./models/booking');
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const graphqlHTTP = require('express-graphql');
@@ -6,6 +11,7 @@ const mongoose = require('mongoose');
 const graphQlSchema = require('./graphql/schema');
 const isAuth = require('./middleware/is-auth');
 const graphQlResolvers = require('./graphql/resolvers');
+
 
 const app = express();
 
@@ -42,6 +48,8 @@ mongoose.connection.on('error', err => {
   console.error(`🙅 🚫 🙅 🚫 🙅 🚫 🙅 🚫 → ${err.message}`);
 });
 
-app.listen(3000, () => {
-  console.log('App listening on port 3000!');
+app.set('port', process.env.PORT || 3000);
+
+const server = app.listen(app.get('port'), () => {
+  console.log(`Express App Running at http://localhost:${server.address().port}!`);
 });
