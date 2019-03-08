@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
+
+import AuthContext from '../context/auth-context';
 
 const Global = createGlobalStyle`
   body {
@@ -45,37 +47,45 @@ const Global = createGlobalStyle`
   }
 
   .main-navigation__item a:hover,
-  .main-navigation__item a:active, {
+  .main-navigation__item a:active,
   .main-navigation__item a.active {
     color: #f8e264;
   }
 `;
 
 
-export default class Nav  extends Component {
-  render() {
-    return (
-      <div>
-      <Global/>
-        <header className="main-navigation">
-          <div className="main-navigation__logo">
-            <h1>Tryve Events</h1>
-          </div>
-          <nav className="main-navigation__item">
-            <ul>
-              <li>
-                <NavLink to="/auth" >Authenticate</NavLink>
-              </li>
-              <li>
-                <NavLink to="/events" >Events</NavLink>
-              </li>
-              <li>
-                <NavLink to="/bookings" >Bookings</NavLink>
-              </li>
-            </ul>
-          </nav>
-        </header>
-      </div>
-    )
-  }
+const Nav = (props) => {
+  return (
+    <div>
+      <AuthContext.Consumer>
+        {(context) => {
+          return (
+            <>
+              <Global/>
+              <header className="main-navigation">
+                <div className="main-navigation__logo">
+                  <h1>Tryve Events</h1>
+                </div>
+                <nav className="main-navigation__item">
+                  <ul>
+                    {!context.token && <li>
+                      <NavLink to="/auth" >Authenticate</NavLink>
+                    </li>}
+                    <li>
+                      <NavLink to="/events" >Events</NavLink>
+                    </li>
+                    {context.token && <li>
+                      <NavLink to="/bookings" >Bookings</NavLink>
+                    </li>}
+                  </ul>
+                </nav>
+              </header>
+            </>
+          )
+        }}
+      </AuthContext.Consumer>
+    </div>
+  )
 }
+
+export default Nav;

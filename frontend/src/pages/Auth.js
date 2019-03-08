@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import styled from 'styled-components';
 
+import AuthContext from '../context/auth-context';
+
 const FormStyles = styled.form`
     width: 30em;
     margin: 5em 25em;
@@ -33,6 +35,11 @@ const FormStyles = styled.form`
 `;
 
 export default class Auth extends Component {
+  constructor(props) {
+    super(props)
+    this.emailEl = React.createRef();
+    this.passwordEl = React.createRef();
+  }
 
   state = {
     isLoggedIn: true,
@@ -46,11 +53,7 @@ export default class Auth extends Component {
     })
   }
 
-  constructor(props) {
-    super(props)
-    this.emailEl = React.createRef();
-    this.passwordEl = React.createRef();
-  }
+  static contextType = AuthContext;
 
   submitHandler = (e) => {
     e.preventDefault();
@@ -100,7 +103,14 @@ export default class Auth extends Component {
       }
       return res.json();
     }).then(resData => {
-      console.log(resData);
+      if (resData.data.login.token) {
+        this.context.login(
+          resData.data.login.token,
+          resData.data.login.userId,
+          resData.data.login.tokenExpiration,
+        );
+      }
+
     }).catch(err => console.error(err));
   }
 
